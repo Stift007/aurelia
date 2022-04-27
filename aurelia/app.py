@@ -3,6 +3,7 @@ import http.server
 import http.client
 from math import inf
 import response
+from .html import HTML
 from config import Aurelia
 
 class Requesthandler(http.server.BaseHTTPRequestHandler):
@@ -11,7 +12,18 @@ class Requesthandler(http.server.BaseHTTPRequestHandler):
         try:
             rule, rname = self.find(lambda r:r[0] == self.path,self.aurel.routes)
             res = self.aurel.views[rname](self)
-            if isinstance(res,response.Response):
+            if isinstance(res,HTML):
+                res = res.__repr__()
+                self.send_response(res.status)
+                self.send_header("Content-Type", res.mimetype)
+                for i in res.headers:
+                    self.send_header(i[0],i[1])
+                self.end_headers( )
+                if isinstance(res.body,bytes):
+                    self.wfile.write(res.body)
+                else:
+                    self.wfile.write(res.body.encode())
+            elif isinstance(res,response.Response):
                 self.send_response(res.status)
                 self.send_header("Content-Type", res.mimetype)
                 for i in res.headers:
