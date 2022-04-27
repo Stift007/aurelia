@@ -11,6 +11,8 @@ class Requesthandler(http.server.BaseHTTPRequestHandler):
     def do_GET(self):
         try:
             rule, rname = self.find(lambda r:r[0] == self.path,self.aurel.routes)
+            if not "GET" in self.aurel.methods[rname]:
+                raise http.client.HTTPException("403 Bad Method")
             res = self.aurel.views[rname](self)
             if isinstance(res,HTML):
                 res = res.__repr__()
