@@ -5,7 +5,7 @@ Python Web Framework for creating awesome websites
 
 ```python3
 from aurelia.config import Aurelia
-from aurelia import run
+from aurelia import run, HTML
 from aurelia.response import Response
 from aurelia.fs import send_file
 
@@ -25,5 +25,9 @@ def sendmeafile(request):
 def second(request):
     return "Welcome to Aurelia!"
 
+@app.view("/3")
+def three(request):
+    return HTML.render_file("index.html")
+    
 run("127.0.0.1",80,config=app)
 ```
