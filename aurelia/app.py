@@ -4,7 +4,7 @@ import http.client
 from math import inf
 from .html import HTML
 from .response import Response, FileResponse
-from config import Aurelia
+from .config import Aurelia
 
 class Requesthandler(http.server.BaseHTTPRequestHandler):
     
