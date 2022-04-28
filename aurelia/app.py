@@ -2,17 +2,17 @@ import http
 import http.server
 import http.client
 from math import inf
+from _html import HTML
 import response
-from .html import HTML
 from config import Aurelia
 
 class Requesthandler(http.server.BaseHTTPRequestHandler):
     
     def do_GET(self):
         try:
+            if self.aurel.on_before_request:
+                self.aurel.on_before_request(self)
             rule, rname = self.find(lambda r:r[0] == self.path,self.aurel.routes)
-            if not "GET" in self.aurel.methods[rname]:
-                raise http.client.HTTPException("403 Bad Method")
             res = self.aurel.views[rname](self)
             if isinstance(res,HTML):
                 res = res.__repr__()
@@ -36,6 +36,8 @@ class Requesthandler(http.server.BaseHTTPRequestHandler):
                 else:
                     self.wfile.write(res.body.encode())
             else:
+                
+
                 self.send_response(200)
                 self.send_header("Content-Type", "text/plain")
                 self.end_headers( )
