@@ -2,7 +2,7 @@ import http
 import http.server
 import http.client
 from math import inf
-from _html import HTML
+from .html import HTML
 import response
 from config import Aurelia
 
