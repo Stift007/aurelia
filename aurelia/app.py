@@ -3,7 +3,7 @@ import http.server
 import http.client
 from math import inf
 from .html import HTML
-import response
+from .response import Response, FileResponse
 from config import Aurelia
 
 class Requesthandler(http.server.BaseHTTPRequestHandler):
@@ -25,7 +25,7 @@ class Requesthandler(http.server.BaseHTTPRequestHandler):
                     self.wfile.write(res.body)
                 else:
                     self.wfile.write(res.body.encode())
-            elif isinstance(res,response.Response):
+            elif isinstance(res,(Response,FileResponse)):
                 self.send_response(res.status)
                 self.send_header("Content-Type", res.mimetype)
                 for i in res.headers:
