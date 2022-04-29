@@ -36,7 +36,7 @@ class Requesthandler(http.server.BaseHTTPRequestHandler):
                 else:
                     self.wfile.write(res.body.encode())
             else:
-                
+                print(res)
 
                 self.send_response(200)
                 self.send_header("Content-Type", "text/plain")

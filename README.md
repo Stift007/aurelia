@@ -18,7 +18,7 @@ Or via Polyp:
 
 ## Quickstart
 
-```python3
+```py3
 from aurelia.config import Aurelia
 from aurelia import run_server, HTML
 from aurelia.response import Response
@@ -46,3 +46,34 @@ def three(request):
     
 run_server("127.0.0.1",80,config=app)
 ```
+
+# Blueprints
+A Blueprint is like a nested app within an Aurelia instance  
+
+```py3
+from aurelia.config import Aurelia, make_blueprint
+from aurelia import run_server, HTML
+from aurelia.response import Response
+from aurelia.fs import send_file
+
+def helloworld(request):
+    return Response("Hello World!", mimetype="text/plain")
+
+def hellofromblueprint(request):
+    return Response("Hello World, this is sent using the Blueprint!", mimetype="text/plain")
+
+
+app = Aurelia()
+
+app.register_route("/","ping")
+app.add_view(helloworld,"ping")
+
+bp = make_blueprint(subindex="/myblueprint")
+bp.add_route("/",hellofromblueprint)
+
+app.register_blueprint(bp)
+    
+run_server("127.0.0.1",80,config=app)
+```
+
+This will return the content of the `hellofromblueprint` on calling 127.0.0.1/myblueprint/

@@ -1,7 +1,7 @@
 from .response import Response
 
 class HTML:
-    def __init__(self,*html) -> None:
+    def __init__(self,html) -> None:
         self.html = html
 
     def __repr__(self):
